@@ -30,7 +30,8 @@ public final class ASTUtils {
   }
 
   public static void mayTolerateMissingType(AST ast) {
-    ast.getBindingResolver().lookupEnvironment().mayTolerateMissingType = true;
+    if(ast.getBindingResolver().scope()!=null)
+      ast.getBindingResolver().lookupEnvironment().mayTolerateMissingType = true;
   }
 
   @Nullable
