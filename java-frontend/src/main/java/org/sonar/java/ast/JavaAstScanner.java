@@ -105,8 +105,7 @@ public class JavaAstScanner {
       parseErrorWalkAndVisit(e, inputFile);
     } catch (Exception e) {
       checkInterrupted(e);
-      LOG.error(String.format("Unable to parse source file2 : '%s'", inputFile),e);
-      parseErrorWalkAndVisit(new RecognitionException(1,e.getMessage(),e), inputFile);
+      throw new AnalysisException(getAnalysisExceptionMessage(inputFile), e);
     } catch (StackOverflowError error) {
       LOG.error(String.format("A stack overflow error occurred while analyzing file: '%s'", inputFile), error);
       throw error;
