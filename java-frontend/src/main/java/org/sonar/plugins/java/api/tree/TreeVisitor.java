@@ -152,4 +152,13 @@ public interface TreeVisitor {
   void visitProvidesDirective(ProvidesDirectiveTree tree);
 
   void visitArrayDimension(ArrayDimensionTree tree);
+  void visitTypePattern(TypePatternTree tree);
+
+  void visitNullPattern(NullPatternTree tree);
+
+  void visitDefaultPattern(DefaultPatternTree tree);
+
+  void visitGuardedPattern(GuardedPatternTree tree);
+
+  void visitRecordPattern(RecordPatternTree tree);  
 }

@@ -23,112 +23,7 @@ import com.sonar.sslr.api.RecognitionException;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.compiler.InvalidInputException;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTUtils;
-import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
-import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.AnnotationTypeMemberDeclaration;
-import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
-import org.eclipse.jdt.core.dom.ArrayAccess;
-import org.eclipse.jdt.core.dom.ArrayCreation;
-import org.eclipse.jdt.core.dom.ArrayInitializer;
-import org.eclipse.jdt.core.dom.ArrayType;
-import org.eclipse.jdt.core.dom.AssertStatement;
-import org.eclipse.jdt.core.dom.Assignment;
-import org.eclipse.jdt.core.dom.Block;
-import org.eclipse.jdt.core.dom.BodyDeclaration;
-import org.eclipse.jdt.core.dom.BooleanLiteral;
-import org.eclipse.jdt.core.dom.BreakStatement;
-import org.eclipse.jdt.core.dom.CastExpression;
-import org.eclipse.jdt.core.dom.CatchClause;
-import org.eclipse.jdt.core.dom.CharacterLiteral;
-import org.eclipse.jdt.core.dom.ClassInstanceCreation;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.ConditionalExpression;
-import org.eclipse.jdt.core.dom.ConstructorInvocation;
-import org.eclipse.jdt.core.dom.ContinueStatement;
-import org.eclipse.jdt.core.dom.CreationReference;
-import org.eclipse.jdt.core.dom.Dimension;
-import org.eclipse.jdt.core.dom.DoStatement;
-import org.eclipse.jdt.core.dom.EmptyStatement;
-import org.eclipse.jdt.core.dom.EnhancedForStatement;
-import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
-import org.eclipse.jdt.core.dom.EnumDeclaration;
-import org.eclipse.jdt.core.dom.ExportsDirective;
-import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.ExpressionMethodReference;
-import org.eclipse.jdt.core.dom.ExpressionStatement;
-import org.eclipse.jdt.core.dom.FieldAccess;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.ForStatement;
-import org.eclipse.jdt.core.dom.IBinding;
-import org.eclipse.jdt.core.dom.IExtendedModifier;
-import org.eclipse.jdt.core.dom.IMethodBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jdt.core.dom.IfStatement;
-import org.eclipse.jdt.core.dom.ImportDeclaration;
-import org.eclipse.jdt.core.dom.InfixExpression;
-import org.eclipse.jdt.core.dom.Initializer;
-import org.eclipse.jdt.core.dom.InstanceofExpression;
-import org.eclipse.jdt.core.dom.IntersectionType;
-import org.eclipse.jdt.core.dom.LabeledStatement;
-import org.eclipse.jdt.core.dom.LambdaExpression;
-import org.eclipse.jdt.core.dom.MemberValuePair;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.ModuleDeclaration;
-import org.eclipse.jdt.core.dom.ModuleDirective;
-import org.eclipse.jdt.core.dom.ModuleModifier;
-import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jdt.core.dom.NameQualifiedType;
-import org.eclipse.jdt.core.dom.NormalAnnotation;
-import org.eclipse.jdt.core.dom.NullLiteral;
-import org.eclipse.jdt.core.dom.NumberLiteral;
-import org.eclipse.jdt.core.dom.OpensDirective;
-import org.eclipse.jdt.core.dom.ParameterizedType;
-import org.eclipse.jdt.core.dom.ParenthesizedExpression;
-import org.eclipse.jdt.core.dom.PostfixExpression;
-import org.eclipse.jdt.core.dom.PrefixExpression;
-import org.eclipse.jdt.core.dom.PrimitiveType;
-import org.eclipse.jdt.core.dom.ProvidesDirective;
-import org.eclipse.jdt.core.dom.QualifiedName;
-import org.eclipse.jdt.core.dom.QualifiedType;
-import org.eclipse.jdt.core.dom.RequiresDirective;
-import org.eclipse.jdt.core.dom.ReturnStatement;
-import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.SimpleType;
-import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.Statement;
-import org.eclipse.jdt.core.dom.StringLiteral;
-import org.eclipse.jdt.core.dom.SuperConstructorInvocation;
-import org.eclipse.jdt.core.dom.SuperFieldAccess;
-import org.eclipse.jdt.core.dom.SuperMethodInvocation;
-import org.eclipse.jdt.core.dom.SuperMethodReference;
-import org.eclipse.jdt.core.dom.SwitchCase;
-import org.eclipse.jdt.core.dom.SwitchExpression;
-import org.eclipse.jdt.core.dom.SwitchStatement;
-import org.eclipse.jdt.core.dom.SynchronizedStatement;
-import org.eclipse.jdt.core.dom.ThisExpression;
-import org.eclipse.jdt.core.dom.ThrowStatement;
-import org.eclipse.jdt.core.dom.TryStatement;
-import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jdt.core.dom.TypeDeclarationStatement;
-import org.eclipse.jdt.core.dom.TypeLiteral;
-import org.eclipse.jdt.core.dom.TypeMethodReference;
-import org.eclipse.jdt.core.dom.TypeParameter;
-import org.eclipse.jdt.core.dom.UnionType;
-import org.eclipse.jdt.core.dom.UsesDirective;
-import org.eclipse.jdt.core.dom.VariableDeclaration;
-import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
-import org.eclipse.jdt.core.dom.WhileStatement;
-import org.eclipse.jdt.core.dom.WildcardType;
+import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.jdt.internal.compiler.parser.Scanner;
 import org.eclipse.jdt.internal.compiler.parser.TerminalTokens;
@@ -179,6 +74,7 @@ import org.sonar.java.model.expression.ParenthesizedTreeImpl;
 import org.sonar.java.model.expression.TypeArgumentListTreeImpl;
 import org.sonar.java.model.expression.TypeCastExpressionTreeImpl;
 import org.sonar.java.model.expression.VarTypeTreeImpl;
+import org.sonar.java.model.pattern.*;
 import org.sonar.java.model.statement.AssertStatementTreeImpl;
 import org.sonar.java.model.statement.BlockTreeImpl;
 import org.sonar.java.model.statement.BreakStatementTreeImpl;
@@ -201,44 +97,63 @@ import org.sonar.java.model.statement.SynchronizedStatementTreeImpl;
 import org.sonar.java.model.statement.ThrowStatementTreeImpl;
 import org.sonar.java.model.statement.TryStatementTreeImpl;
 import org.sonar.java.model.statement.WhileStatementTreeImpl;
-import org.sonar.plugins.java.api.tree.AnnotationTree;
-import org.sonar.plugins.java.api.tree.ArrayDimensionTree;
-import org.sonar.plugins.java.api.tree.ArrayTypeTree;
-import org.sonar.plugins.java.api.tree.CatchTree;
-import org.sonar.plugins.java.api.tree.CompilationUnitTree;
-import org.sonar.plugins.java.api.tree.ExpressionTree;
-import org.sonar.plugins.java.api.tree.IdentifierTree;
-import org.sonar.plugins.java.api.tree.ImportClauseTree;
-import org.sonar.plugins.java.api.tree.InferedTypeTree;
+import org.sonar.plugins.java.api.tree.*;
 import org.sonar.plugins.java.api.tree.Modifier;
-import org.sonar.plugins.java.api.tree.ModifierTree;
-import org.sonar.plugins.java.api.tree.ModuleDeclarationTree;
-import org.sonar.plugins.java.api.tree.ModuleDirectiveTree;
-import org.sonar.plugins.java.api.tree.PackageDeclarationTree;
-import org.sonar.plugins.java.api.tree.StatementTree;
-import org.sonar.plugins.java.api.tree.SyntaxTrivia;
-import org.sonar.plugins.java.api.tree.Tree;
-import org.sonar.plugins.java.api.tree.TypeParameterTree;
-import org.sonar.plugins.java.api.tree.TypeTree;
-import org.sonar.plugins.java.api.tree.VariableTree;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 @ParametersAreNonnullByDefault
 public class JParser {
-
+  private static final String MAXIMUM_ECJ_WARNINGS = "42000";
   public static CompilationUnitTree parse(String version, String unitName, String source, List<File> classpath) {
     return parse(version, unitName, source, true, classpath);
+  }
+  public enum JProblemType {
+    UNDEFINED_TYPE(IProblem.UndefinedType),
+    PREVIEW_FEATURE_USED(IProblem.PreviewFeatureUsed),
+    UNUSED_IMPORT(IProblem.UnusedImport, JavaCore.COMPILER_PB_UNUSED_IMPORT, Tree.Kind.IMPORT),
+    REDUNDANT_CAST(IProblem.UnnecessaryCast, JavaCore.COMPILER_PB_UNNECESSARY_TYPE_CHECK, Tree.Kind.TYPE_CAST, Tree.Kind.PARENTHESIZED_EXPRESSION),
+    ASSIGNMENT_HAS_NO_EFFECT(IProblem.AssignmentHasNoEffect, JavaCore.COMPILER_PB_NO_EFFECT_ASSIGNMENT, Tree.Kind.ASSIGNMENT),
+    MASKED_CATCH(IProblem.MaskedCatch, JavaCore.COMPILER_PB_HIDDEN_CATCH_BLOCK, Tree.Kind.IDENTIFIER, Tree.Kind.MEMBER_SELECT);
+
+    private final int warningID;
+    private final String compilerOptionKey;
+    private final Set<Tree.Kind> kinds;
+
+    private static final Set<String> COMPILER_OPTIONS = new HashSet<>();
+
+    JProblemType(int warningID) {
+      this.warningID = warningID;
+      this.compilerOptionKey = null;
+      this.kinds = Collections.emptySet();
+    }
+
+    JProblemType(int warningID, String compilerOptionKey, Tree.Kind... kinds) {
+      this.warningID = warningID;
+      this.compilerOptionKey = compilerOptionKey;
+      this.kinds = new HashSet(Arrays.asList(kinds));
+    }
+
+    boolean matches(IProblem warning) {
+      return warning.getID() == warningID;
+    }
+
+    public static Set<String> compilerOptions() {
+      if (COMPILER_OPTIONS.isEmpty()) {
+        Stream.of(JProblemType.values())
+          .map(t -> t.compilerOptionKey)
+          .forEach(COMPILER_OPTIONS::add);
+      }
+      return Collections.unmodifiableSet(COMPILER_OPTIONS);
+    }
+
+    public Set<Tree.Kind> getKinds() {
+      return kinds;
+    }
   }
 
   /**
@@ -252,11 +167,17 @@ public class JParser {
     boolean resolveBindings,
     List<File> classpath
   ) {
-    ASTParser astParser = ASTParser.newParser(AST.JLS12);
+    ASTParser astParser = ASTParser.newParser(AST.getJLSLatest());
     Map<String, String> options = new HashMap<>();
-    options.put(JavaCore.COMPILER_COMPLIANCE, version);
-    options.put(JavaCore.COMPILER_SOURCE, version);
+    options.put(JavaCore.COMPILER_COMPLIANCE, "23");
+    options.put(JavaCore.COMPILER_SOURCE, "23");
+    options.put(JavaCore.COMPILER_PB_MAX_PER_UNIT, MAXIMUM_ECJ_WARNINGS);
+    options.put(JavaCore.COMPILER_IGNORE_UNNAMED_MODULE_FOR_SPLIT_PACKAGE, "enabled");
     options.put(JavaCore.COMPILER_PB_ENABLE_PREVIEW_FEATURES, "enabled");
+    // enabling all supported compiler warnings
+    JProblemType.compilerOptions()
+      .forEach(option -> options.put(option, "warning"));
+
     astParser.setCompilerOptions(options);
 
     astParser.setEnvironment(
@@ -267,7 +188,7 @@ public class JParser {
     );
     astParser.setUnitName(unitName);
 
-    astParser.setResolveBindings(resolveBindings);
+    astParser.setResolveBindings(true);
     astParser.setBindingsRecovery(true);
 
     char[] sourceChars = source.toCharArray();
@@ -1403,21 +1324,11 @@ public class JParser {
       }
       case ASTNode.BREAK_STATEMENT: {
         BreakStatement e = (BreakStatement) node;
-        if (e.isImplicit()) {
-          return new ExpressionStatementTreeImpl(
-            convertExpression(e.getExpression()),
-            lastTokenIn(e, TerminalTokens.TokenNameSEMICOLON)
-          );
-        }
         ExpressionTree expression;
-        if (e.getExpression() == null) {
-          SimpleName label = e.getLabel();
-          IdentifierTreeImpl i = label == null ? null : convertSimpleName(label);
-          usageLabel(i);
-          expression = i;
-        } else {
-          expression = convertExpression(e.getExpression());
-        }
+        SimpleName label = e.getLabel();
+        IdentifierTreeImpl i = label == null ? null : convertSimpleName(label);
+        usageLabel(i);
+        expression = i;
         return new BreakStatementTreeImpl(
           firstTokenIn(e, TerminalTokens.TokenNamebreak),
           expression,
@@ -1667,6 +1578,116 @@ public class JParser {
         throw new IllegalStateException(ASTNode.nodeClassForType(node.getNodeType()).toString());
     }
   }
+  private VariableTreeImpl convertVariable(TypePattern typePattern) {
+    if (typePattern.getAST().apiLevel() < AST.JLS22) {
+      return convertVariable(typePattern.getPatternVariable());
+    }
+    VariableDeclaration variableDeclaration = typePattern.getPatternVariable2();
+    if (variableDeclaration instanceof VariableDeclarationFragment declarationFragment) {
+      return convertVariable(declarationFragment);
+    } else {
+      return convertVariable((SingleVariableDeclaration) variableDeclaration);
+    }
+  }
+
+  private VariableTreeImpl convertVariable(VariableDeclarationFragment declarationFragment) {
+    return completeInitializerAndBinding(
+      new VariableTreeImpl(createSimpleName(declarationFragment.getName())),
+      declarationFragment);
+  }
+
+  private VariableTreeImpl convertVariable(SingleVariableDeclaration e) {
+    // TODO are extraDimensions and varargs mutually exclusive?
+    TypeTree type = convertType(e.getType());
+    type = applyExtraDimensions(type, e.extraDimensions());
+    if (e.isVarargs()) {
+      ITypeBinding typeBinding = ((AbstractTypedTree) type).typeBinding;
+      type = new JavaTree.ArrayTypeTreeImpl(
+        type,
+        (List) convertAnnotations(e.varargsAnnotations()),
+        firstTokenAfter(e.getType(), TerminalTokens.TokenNameELLIPSIS)
+      );
+      if (typeBinding != null) {
+        ((JavaTree.ArrayTypeTreeImpl) type).typeBinding = typeBinding.createArrayType(1);
+      }
+    }
+
+    VariableTreeImpl t = new VariableTreeImpl(
+      e.isVarargs(),
+      convertModifiers(e.modifiers()),
+      type,
+      createSimpleName(e.getName())
+    );
+    return completeInitializerAndBinding(t, e);
+  }
+  private VariableTreeImpl completeInitializerAndBinding(VariableTreeImpl t, VariableDeclaration e) {
+    if (e.getInitializer() != null) {
+      t.completeTypeAndInitializer(
+        t.type(),
+        firstTokenAfter(e.getName(), TerminalTokens.TokenNameEQUAL),
+        convertExpression(e.getInitializer())
+      );
+    }
+    t.variableBinding = e.resolveBinding();
+    if (t.variableBinding != null) {
+      if (t.type() instanceof InferedTypeTree inferredType) {
+        inferredType.typeBinding = t.variableBinding.getType();
+      }
+      declaration(t.variableBinding, t);
+    }
+    return t;
+  }
+  static int firstIndexIn(TokenManager tokenManager, ASTNode e, int tokenTypeCandidateA, int tokenTypeCandidateB) {
+    int first = tokenManager.firstIndexIn(e, ANY_TOKEN);
+    int last = tokenManager.lastIndexIn(e, ANY_TOKEN);
+    for (int tokenIndex = first; tokenIndex <= last; tokenIndex++) {
+      Token token = tokenManager.get(tokenIndex);
+      if (token.tokenType == tokenTypeCandidateA || token.tokenType == tokenTypeCandidateB) {
+        return tokenIndex;
+      }
+    }
+    throw new IllegalStateException("Failed to find token " + tokenTypeCandidateA + " or " + tokenTypeCandidateB +
+      " in the tokens of a " + ASTNode.nodeClassForType(e.getNodeType()).getName());
+  }
+  private IdentifierTreeImpl createSimpleName(SimpleName e) {
+    int tokenIndex = firstIndexIn(tokenManager, e, TerminalTokens.TokenNameIdentifier, TerminalTokens.TokenNameUNDERSCORE);
+    Token token = tokenManager.get(tokenIndex);
+    boolean isUnnamedVariable = token.tokenType == TerminalTokens.TokenNameUNDERSCORE;
+    IdentifierTreeImpl t = new IdentifierTreeImpl(createSyntaxToken(tokenIndex));
+    t.typeBinding = e.resolveTypeBinding();
+    t.binding = e.resolveBinding();
+    return t;
+  }
+  private PatternTree convertPattern(Pattern p) {
+    switch (p.getNodeType()) {
+      case ASTNode.TYPE_PATTERN:
+        TypePattern typePattern = (TypePattern) p;
+        return new TypePatternTreeImpl(convertVariable(typePattern), typePattern.resolveTypeBinding());
+      case ASTNode.RECORD_PATTERN:
+        RecordPattern recordPattern = (RecordPattern) p;
+        List<PatternTree> nestedPatterns = recordPattern.patterns().stream()
+          .map(this::convertPattern)
+          .toList();
+
+        TypeTree patternType = convertType(recordPattern.getPatternType());
+        var openParenToken = firstTokenIn(recordPattern, TerminalTokens.TokenNameLPAREN);
+        var closeParenToken = lastTokenIn(recordPattern, TerminalTokens.TokenNameRPAREN);
+        return new RecordPatternTreeImpl(patternType, openParenToken, nestedPatterns, closeParenToken);
+      case ASTNode.GUARDED_PATTERN:
+        GuardedPattern g = (GuardedPattern) p;
+        return new GuardedPatternTreeImpl(
+          convertPattern(g.getPattern()),
+          firstTokenBefore(g.getExpression(), TerminalTokens.TokenNameRestrictedIdentifierWhen),
+          convertExpression(g.getExpression()),
+          g.resolveTypeBinding());
+      case ASTNode.NULL_PATTERN:
+        // It is not clear how to reach this one, it seems to be possible only with badly constructed AST
+        // fall-through. Do nothing for now.
+      default:
+        // JEP-405 (not released as part of any JDK yet): ArrayPattern, RecordPattern
+        throw new IllegalStateException(ASTNode.nodeClassForType(p.getNodeType()).toString());
+    }
+  }
 
   private List<CaseGroupTreeImpl> convertSwitchStatements(List list) {
     List<CaseGroupTreeImpl> groups = new ArrayList<>();
@@ -1683,9 +1704,8 @@ public class JParser {
 
         List<ExpressionTree> expressions = new ArrayList<>();
         for (Object oo : c.expressions()) {
-          expressions.add(
-            convertExpression((Expression) oo)
-          );
+          ExpressionTree et=convertExpressionFromCase((Expression) oo);
+          if(!(et instanceof PatternTree)) expressions.add(et);
         }
 
         caselabels.add(new CaseLabelTreeImpl(
@@ -1712,7 +1732,18 @@ public class JParser {
     }
     return groups;
   }
-
+  private ExpressionTree convertExpressionFromCase(Expression e) {
+    if (e.getNodeType() == ASTNode.CASE_DEFAULT_EXPRESSION) {
+      return new DefaultPatternTreeImpl(firstTokenIn(e, TerminalTokens.TokenNamedefault), e.resolveTypeBinding());
+    }
+    if (e.getNodeType() == ASTNode.NULL_LITERAL) {
+      return new NullPatternTreeImpl((LiteralTreeImpl) convertExpression(e));
+    }
+    if (e instanceof Pattern pattern) {
+      return convertPattern(pattern);
+    }
+    return convertExpression(e);
+  }
   private ExpressionTree convertExpression(Expression node) {
     ExpressionTree t = createExpression(node);
     if (!t.is(Tree.Kind.SWITCH_EXPRESSION)) {
@@ -2123,6 +2154,22 @@ public class JParser {
           convertExpression(e.getOperand())
         );
       }
+      case ASTNode.PATTERN_INSTANCEOF_EXPRESSION:
+      {
+        PatternInstanceofExpression e = (PatternInstanceofExpression) node;
+        TypeTree t=null;
+        Pattern pt=e.getPattern();
+        if(pt instanceof TypePattern tp)
+          t=((TypePatternTree)convertPattern(tp)).patternVariable().type();
+        else if(pt instanceof RecordPattern rp)
+          t=convertType(rp.getPatternType());
+        return new InstanceOfTreeImpl(
+          firstTokenAfter(e.getLeftOperand(), TerminalTokens.TokenNameinstanceof),
+          t
+        ).complete(
+          convertExpression(e.getLeftOperand())
+        );
+      }
       case ASTNode.INSTANCEOF_EXPRESSION: {
         InstanceofExpression e = (InstanceofExpression) node;
         return new InstanceOfTreeImpl(
@@ -2294,6 +2341,8 @@ public class JParser {
           firstTokenIn(e, TerminalTokens.TokenNameStringLiteral)
         );
       }
+      case ASTNode.TEXT_BLOCK:
+        return convertTextBlock((TextBlock) node);
       case ASTNode.NORMAL_ANNOTATION:
       case ASTNode.MARKER_ANNOTATION:
       case ASTNode.SINGLE_MEMBER_ANNOTATION: {
@@ -2338,6 +2387,9 @@ public class JParser {
       default:
         throw new IllegalStateException(ASTNode.nodeClassForType(node.getNodeType()).toString());
     }
+  }
+  private LiteralTreeImpl convertTextBlock(TextBlock e) {
+    return new LiteralTreeImpl(Tree.Kind.STRING_LITERAL, firstTokenIn(e, TerminalTokens.TokenNameTextBlock));
   }
 
   private KeywordSuper unqualifiedKeywordSuper(ASTNode node) {

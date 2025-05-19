@@ -431,4 +431,29 @@ public class BaseTreeVisitor implements TreeVisitor {
     scan(tree.expression());
   }
 
+  @Override
+  public void visitTypePattern(TypePatternTree tree) {
+
+  }
+
+  @Override
+  public void visitNullPattern(NullPatternTree tree) {
+
+  }
+
+  @Override
+  public void visitDefaultPattern(DefaultPatternTree tree) {
+
+  }
+
+  @Override
+  public void visitGuardedPattern(GuardedPatternTree tree) {
+
+  }
+
+  @Override
+  public void visitRecordPattern(RecordPatternTree tree) {
+
+  }
+
 }

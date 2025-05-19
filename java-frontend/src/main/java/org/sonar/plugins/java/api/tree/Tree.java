@@ -678,6 +678,41 @@ public interface Tree {
     ARRAY_DIMENSION(ArrayDimensionTree.class),
 
     /**
+     * {@link TypePatternTree}
+     *
+     * @since Java 17 (Preview Feature) and Java 21 (Final)
+     */
+    TYPE_PATTERN(TypePatternTree.class),
+
+    /**
+     * {@link GuardedPatternTree}
+     *
+     * @since Java 17 (Preview Feature) and Java 21 (Final)
+     */
+    GUARDED_PATTERN(GuardedPatternTree.class),
+
+    /**
+     * {@link NullPatternTree}
+     *
+     * @since Java 17 (Preview Feature) and Java 21 (Final)
+     */
+    NULL_PATTERN(NullPatternTree.class),
+
+    /**
+     * {@link DefaultPatternTree}
+     *
+     * @since Java 17 (Preview Feature) and Java 21 (Final)
+     */
+    DEFAULT_PATTERN(DefaultPatternTree.class),
+
+    /**
+     * {@link RecordPatternTree}
+     *
+     * @since Java 19 (Preview Feature) and Java 21 (Final)
+     */
+    RECORD_PATTERN(RecordPatternTree.class),
+
+    /**
      *An implementation-reserved node.
      *
      */
