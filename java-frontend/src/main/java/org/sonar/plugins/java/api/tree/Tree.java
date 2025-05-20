@@ -1,26 +1,25 @@
 /*
  * SonarQube Java
- * Copyright (C) 2012-2019 SonarSource SA
+ * Copyright (C) 2012-2025 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ * modify it under the terms of the Sonar Source-Available License Version 1, as published by SonarSource SA.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the Sonar Source-Available License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the Sonar Source-Available License
+ * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
 package org.sonar.plugins.java.api.tree;
 
-import com.google.common.annotations.Beta;
+
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.Beta;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 /**
@@ -73,6 +72,13 @@ public interface Tree {
      * @since Java 1.5
      */
     ANNOTATION_TYPE(ClassTree.class),
+
+    /**
+     * {@link ClassTree}
+     *
+     * @since Java 16
+     */
+    RECORD(ClassTree.class),
 
     /**
      * {@link EnumConstantTree}
@@ -180,6 +186,13 @@ public interface Tree {
      * {@link BreakStatementTree}
      */
     BREAK_STATEMENT(BreakStatementTree.class),
+
+    /**
+     * {@link YieldStatementTree}
+     *
+     * @since Java 14
+     */
+    YIELD_STATEMENT(YieldStatementTree.class),
 
     /**
      * {@link ContinueStatementTree}
@@ -410,8 +423,17 @@ public interface Tree {
 
     /**
      * {@link InstanceOfTree}
+     * {@code variable instanceof Type}
      */
     INSTANCE_OF(InstanceOfTree.class),
+
+    /**
+     * {@link PatternInstanceOfTree}
+     * {@code variable instanceof Type t}
+     *
+     * @since Java 16
+     */
+    PATTERN_INSTANCE_OF(PatternInstanceOfTree.class),
 
     /**
      * {@link ParenthesizedTree}
@@ -530,6 +552,11 @@ public interface Tree {
      * {@link LiteralTree}
      */
     STRING_LITERAL(LiteralTree.class),
+
+    /**
+     * {@link LiteralTree}
+     */
+    TEXT_BLOCK(LiteralTree.class),
 
     /**
      * {@link LiteralTree}
@@ -713,8 +740,7 @@ public interface Tree {
     RECORD_PATTERN(RecordPatternTree.class),
 
     /**
-     *An implementation-reserved node.
-     *
+     * An implementation-reserved node.
      */
     OTHER(Tree.class),
 

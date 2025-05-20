@@ -30,73 +30,11 @@ import org.eclipse.jdt.internal.compiler.parser.TerminalTokens;
 import org.eclipse.jdt.internal.formatter.DefaultCodeFormatterOptions;
 import org.eclipse.jdt.internal.formatter.Token;
 import org.eclipse.jdt.internal.formatter.TokenManager;
-import org.sonar.java.ast.parser.ArgumentListTreeImpl;
-import org.sonar.java.ast.parser.BlockStatementListTreeImpl;
-import org.sonar.java.ast.parser.BoundListTreeImpl;
-import org.sonar.java.ast.parser.FormalParametersListTreeImpl;
-import org.sonar.java.ast.parser.InitializerListTreeImpl;
-import org.sonar.java.ast.parser.ModuleNameTreeImpl;
-import org.sonar.java.ast.parser.QualifiedIdentifierListTreeImpl;
-import org.sonar.java.ast.parser.ResourceListTreeImpl;
-import org.sonar.java.ast.parser.StatementExpressionListTreeImpl;
-import org.sonar.java.ast.parser.TypeParameterListTreeImpl;
-import org.sonar.java.ast.parser.TypeUnionListTreeImpl;
-import org.sonar.java.model.declaration.AnnotationTreeImpl;
-import org.sonar.java.model.declaration.ClassTreeImpl;
-import org.sonar.java.model.declaration.EnumConstantTreeImpl;
-import org.sonar.java.model.declaration.ExportsDirectiveTreeImpl;
-import org.sonar.java.model.declaration.MethodTreeImpl;
-import org.sonar.java.model.declaration.ModifierKeywordTreeImpl;
-import org.sonar.java.model.declaration.ModifiersTreeImpl;
-import org.sonar.java.model.declaration.ModuleDeclarationTreeImpl;
-import org.sonar.java.model.declaration.ModuleNameListTreeImpl;
-import org.sonar.java.model.declaration.OpensDirectiveTreeImpl;
-import org.sonar.java.model.declaration.ProvidesDirectiveTreeImpl;
-import org.sonar.java.model.declaration.RequiresDirectiveTreeImpl;
-import org.sonar.java.model.declaration.UsesDirectiveTreeImpl;
-import org.sonar.java.model.declaration.VariableTreeImpl;
-import org.sonar.java.model.expression.ArrayAccessExpressionTreeImpl;
-import org.sonar.java.model.expression.AssignmentExpressionTreeImpl;
-import org.sonar.java.model.expression.BinaryExpressionTreeImpl;
-import org.sonar.java.model.expression.ConditionalExpressionTreeImpl;
-import org.sonar.java.model.expression.IdentifierTreeImpl;
-import org.sonar.java.model.expression.InstanceOfTreeImpl;
-import org.sonar.java.model.expression.InternalPostfixUnaryExpression;
-import org.sonar.java.model.expression.InternalPrefixUnaryExpression;
-import org.sonar.java.model.expression.LambdaExpressionTreeImpl;
-import org.sonar.java.model.expression.LiteralTreeImpl;
-import org.sonar.java.model.expression.MemberSelectExpressionTreeImpl;
-import org.sonar.java.model.expression.MethodInvocationTreeImpl;
-import org.sonar.java.model.expression.MethodReferenceTreeImpl;
-import org.sonar.java.model.expression.NewArrayTreeImpl;
-import org.sonar.java.model.expression.NewClassTreeImpl;
-import org.sonar.java.model.expression.ParenthesizedTreeImpl;
-import org.sonar.java.model.expression.TypeArgumentListTreeImpl;
-import org.sonar.java.model.expression.TypeCastExpressionTreeImpl;
-import org.sonar.java.model.expression.VarTypeTreeImpl;
+import org.sonar.java.ast.parser.*;
+import org.sonar.java.model.declaration.*;
+import org.sonar.java.model.expression.*;
 import org.sonar.java.model.pattern.*;
-import org.sonar.java.model.statement.AssertStatementTreeImpl;
-import org.sonar.java.model.statement.BlockTreeImpl;
-import org.sonar.java.model.statement.BreakStatementTreeImpl;
-import org.sonar.java.model.statement.CaseGroupTreeImpl;
-import org.sonar.java.model.statement.CaseLabelTreeImpl;
-import org.sonar.java.model.statement.CatchTreeImpl;
-import org.sonar.java.model.statement.ContinueStatementTreeImpl;
-import org.sonar.java.model.statement.DoWhileStatementTreeImpl;
-import org.sonar.java.model.statement.EmptyStatementTreeImpl;
-import org.sonar.java.model.statement.ExpressionStatementTreeImpl;
-import org.sonar.java.model.statement.ForEachStatementImpl;
-import org.sonar.java.model.statement.ForStatementTreeImpl;
-import org.sonar.java.model.statement.IfStatementTreeImpl;
-import org.sonar.java.model.statement.LabeledStatementTreeImpl;
-import org.sonar.java.model.statement.ReturnStatementTreeImpl;
-import org.sonar.java.model.statement.StaticInitializerTreeImpl;
-import org.sonar.java.model.statement.SwitchExpressionTreeImpl;
-import org.sonar.java.model.statement.SwitchStatementTreeImpl;
-import org.sonar.java.model.statement.SynchronizedStatementTreeImpl;
-import org.sonar.java.model.statement.ThrowStatementTreeImpl;
-import org.sonar.java.model.statement.TryStatementTreeImpl;
-import org.sonar.java.model.statement.WhileStatementTreeImpl;
+import org.sonar.java.model.statement.*;
 import org.sonar.plugins.java.api.tree.*;
 import org.sonar.plugins.java.api.tree.Modifier;
 
@@ -166,11 +104,13 @@ public class JParser {
     String source,
     boolean resolveBindings,
     List<File> classpath
-  ) {
+  )
+  {
+    String jver=String.valueOf(AST.getJLSLatest());
     ASTParser astParser = ASTParser.newParser(AST.getJLSLatest());
     Map<String, String> options = new HashMap<>();
-    options.put(JavaCore.COMPILER_COMPLIANCE, "23");
-    options.put(JavaCore.COMPILER_SOURCE, "23");
+    options.put(JavaCore.COMPILER_COMPLIANCE, jver);
+    options.put(JavaCore.COMPILER_SOURCE, jver);
     options.put(JavaCore.COMPILER_PB_MAX_PER_UNIT, MAXIMUM_ECJ_WARNINGS);
     options.put(JavaCore.COMPILER_IGNORE_UNNAMED_MODULE_FOR_SPLIT_PACKAGE, "enabled");
     options.put(JavaCore.COMPILER_PB_ENABLE_PREVIEW_FEATURES, "enabled");
@@ -1574,6 +1514,20 @@ public class JParser {
           lastTokenIn(e, TerminalTokens.TokenNameSEMICOLON)
         );
       }
+      case ASTNode.YIELD_STATEMENT: {
+        YieldStatement e = (YieldStatement) node;
+        if (e.isImplicit()) {
+          return new ExpressionStatementTreeImpl(
+                  convertExpression(e.getExpression()),
+                  lastTokenIn(e, TerminalTokens.TokenNameSEMICOLON)
+          );
+        }
+        return new BreakStatementTreeImpl(
+                firstTokenIn(e, ANY_TOKEN),
+                convertExpression(e.getExpression()),
+                lastTokenIn(e, TerminalTokens.TokenNameSEMICOLON)
+        );
+      }
       default:
         throw new IllegalStateException(ASTNode.nodeClassForType(node.getNodeType()).toString());
     }
@@ -2389,7 +2343,7 @@ public class JParser {
     }
   }
   private LiteralTreeImpl convertTextBlock(TextBlock e) {
-    return new LiteralTreeImpl(Tree.Kind.STRING_LITERAL, firstTokenIn(e, TerminalTokens.TokenNameTextBlock));
+    return new LiteralTreeImpl(Tree.Kind.TEXT_BLOCK, firstTokenIn(e, TerminalTokens.TokenNameTextBlock));
   }
 
   private KeywordSuper unqualifiedKeywordSuper(ASTNode node) {
