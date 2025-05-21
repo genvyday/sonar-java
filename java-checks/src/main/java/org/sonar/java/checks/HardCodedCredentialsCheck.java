@@ -48,7 +48,7 @@ import org.sonar.plugins.java.api.tree.VariableTree;
 @Rule(key = "S2068")
 public class HardCodedCredentialsCheck extends IssuableSubscriptionVisitor {
 
-  private static final String DEFAULT_CREDENTIAL_WORDS = "password,passwd,pwd,passphrase,java.naming.security.credentials";
+  private static final String DEFAULT_CREDENTIAL_WORDS = "java.naming.security.credentials";
   private static final String JAVA_LANG_STRING = "java.lang.String";
   private static final String JAVA_LANG_OBJECT = "java.lang.Object";
 
