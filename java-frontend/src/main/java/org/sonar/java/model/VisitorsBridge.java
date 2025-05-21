@@ -25,12 +25,7 @@ import com.google.common.collect.ImmutableList;
 import com.sonar.sslr.api.RecognitionException;
 import java.io.File;
 import java.io.InterruptedIOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -63,7 +58,28 @@ import org.sonar.plugins.java.api.tree.SyntaxToken;
 import org.sonar.plugins.java.api.tree.Tree;
 
 public class VisitorsBridge {
-
+  public static class VisitorException extends RuntimeException
+  {
+    private Tree tree;
+    public VisitorException(Tree t,RuntimeException cause)
+    {
+      super(cause);
+      tree=t;
+    }
+    private int line(SyntaxToken st)
+    {
+      return st==null?-1:st.line();
+    }
+    public int lastLine()
+    {
+      return line(tree.lastToken());
+    }
+    public int startLine()
+    {
+      return line(tree.firstToken());
+    }
+    public Tree tree(){return tree;}
+  }
   private static final Logger LOG = Loggers.get(VisitorsBridge.class);
 
   private final BehaviorCache behaviorCache;
@@ -277,8 +293,18 @@ public class VisitorsBridge {
         }
       }
     }
-
     private void visit(Tree tree) {
+      try
+      {
+        visitX(tree);
+      }
+      catch (RuntimeException e)
+      {
+        if(e instanceof VisitorException) throw e;
+        throw new VisitorException(tree,e);
+      }
+    }
+    private void visitX(Tree tree) {
       Consumer<SubscriptionVisitor> callback;
       boolean isToken = tree.kind() == Tree.Kind.TOKEN;
       if (isToken) {

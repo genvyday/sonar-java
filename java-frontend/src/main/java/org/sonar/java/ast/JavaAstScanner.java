@@ -101,11 +101,15 @@ public class JavaAstScanner {
       checkInterrupted(e);
       LOG.error(String.format("Unable to parse source file : '%s'", inputFile));
       LOG.error(e.getMessage());
-
       parseErrorWalkAndVisit(e, inputFile);
-    } catch (Exception e) {
+    }catch (VisitorsBridge.VisitorException e)
+    {
+      LOG.info("VisitorException: start line:{} last line:{} Tree:{}",e.startLine(),e.lastLine(),e.tree().getClass(),e);
+    }
+    catch (Exception e) {
       checkInterrupted(e);
-      throw new AnalysisException(getAnalysisExceptionMessage(inputFile), e);
+      LOG.info("Exception:",e);
+      //throw new AnalysisException(getAnalysisExceptionMessage(inputFile), e);
     } catch (StackOverflowError error) {
       LOG.error(String.format("A stack overflow error occurred while analyzing file: '%s'", inputFile), error);
       throw error;

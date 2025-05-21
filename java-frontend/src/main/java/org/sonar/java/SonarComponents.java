@@ -24,14 +24,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.sonar.sslr.api.RecognitionException;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
-import javax.annotation.Nullable;
 import org.sonar.api.SonarProduct;
 import org.sonar.api.batch.ScannerSide;
 import org.sonar.api.batch.bootstrap.ProjectDefinition;
@@ -47,9 +39,16 @@ import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.rule.RuleKey;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.java.api.CheckRegistrar;
 import org.sonar.plugins.java.api.JavaCheck;
 import org.sonarsource.api.sonarlint.SonarLintSide;
+
+import javax.annotation.Nullable;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @ScannerSide
 @SonarLintSide
@@ -66,7 +65,7 @@ public class SonarComponents {
    * This does not take into account eventual overhead of serialization.
    */
   private static final int ERROR_SERIALIZATION_LIMIT = 100_000;
-
+  private static final Logger LOG = Loggers.get(SonarComponents.class);
   private final FileLinesContextFactory fileLinesContextFactory;
   private final JavaTestClasspath javaTestClasspath;
   private final CheckFactory checkFactory;
@@ -220,7 +219,16 @@ public class SonarComponents {
       return;
     }
     Double cost = analyzerMessage.getCost();
-    reportIssue(analyzerMessage, key, inputComponent, cost);
+    try{
+      reportIssue(analyzerMessage, key, inputComponent, cost);
+    }
+    catch(RuntimeException e)
+    {
+      String noStackClz="org.sonar.java.checks.unused.UnusedPrivateFieldCheck";
+      String clz=analyzerMessage.getCheck().getClass().getName();
+      if(clz.equals(noStackClz)) LOG.warn("reportIssue Exception: CheckClass:{} {}",clz,e.getMessage());
+      else LOG.warn("reportIssue Exception: CheckClass:{}",clz,e);
+    }
   }
 
   @VisibleForTesting
