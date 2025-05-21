@@ -89,10 +89,10 @@ public class NoWayOutLoopCheck extends SECheck {
   }
 
   private void checkLoopWithAlwaysTrueCondition(CheckerContext context, Tree statementParent) {
-    CFGLoop loopBlocks = contexts.peek().getLoop(statementParent);
-    if (loopBlocks != null && loopBlocks.hasNoWayOut()) {
-      context.reportIssue(statementParent, NoWayOutLoopCheck.this, "Add an end condition to this loop.");
-    }
+    //CFGLoop loopBlocks = contexts.peek().getLoop(statementParent);
+    //if (loopBlocks != null && loopBlocks.hasNoWayOut()) {
+    //  context.reportIssue(statementParent, NoWayOutLoopCheck.this, "Add an end condition to this loop.");
+    //}
   }
 
   @Override

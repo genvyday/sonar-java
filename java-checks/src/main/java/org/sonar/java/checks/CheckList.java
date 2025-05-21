@@ -336,7 +336,7 @@ public final class CheckList {
       CompareStringsBoxedTypesWithEqualsCheck.class,
       RepeatAnnotationCheck.class,
       NPEThrowCheck.class,
-      NullDereferenceInConditionalCheck.class,
+      //NullDereferenceInConditionalCheck.class,
       SelfAssignementCheck.class,
       MismatchPackageDirectoryCheck.class,
       ReplaceLambdaByMethodRefCheck.class,
