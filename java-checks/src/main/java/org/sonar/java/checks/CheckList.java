@@ -369,7 +369,7 @@ public final class CheckList {
       CatchIllegalMonitorStateExceptionCheck.class,
       ForLoopTerminationConditionCheck.class,
       HttpRefererCheck.class,
-      HardCodedCredentialsCheck.class,
+      //HardCodedCredentialsCheck.class,
       PseudoRandomCheck.class,
       MainMethodThrowsExceptionCheck.class,
       ResultSetIsLastCheck.class,

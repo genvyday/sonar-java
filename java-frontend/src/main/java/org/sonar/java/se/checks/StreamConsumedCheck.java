@@ -64,8 +64,8 @@ public class StreamConsumedCheck extends SECheck {
     "java.util.stream.DoubleStream");
   private static final MethodMatcherCollection TERMINAL_OPERATIONS = MethodMatcherCollection.create();
   static {
-    List<String> terminalMethods = ImmutableList.of("forEach", "forEachOrdered", "toArray", "collect", "reduce", "findAny", "findFirst", "count", "min", "max", "anyMatch",
-      "allMatch", "noneMatch", "average", "summaryStatistics", "sum");
+    List<String> terminalMethods = ImmutableList.of("forEach", "forEachOrdered", "toArray", "toList", "collect", "reduce", "findAny", "findFirst", "count", "min", "max", "anyMatch",
+            "allMatch", "noneMatch", "average", "summaryStatistics", "sum");
 
     STREAM_TYPES.forEach(streamType -> terminalMethods.forEach(method ->
       TERMINAL_OPERATIONS.add(MethodMatcher.create().typeDefinition(streamType).name(method).withAnyParameters())));
