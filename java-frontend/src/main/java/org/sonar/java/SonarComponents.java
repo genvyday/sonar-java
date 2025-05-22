@@ -226,8 +226,9 @@ public class SonarComponents {
     {
       String noStackClz="org.sonar.java.checks.unused.UnusedPrivateFieldCheck";
       String clz=analyzerMessage.getCheck().getClass().getName();
-      if(clz.equals(noStackClz)) LOG.warn("reportIssue Exception: CheckClass:{} {}",clz,e.getMessage());
-      else LOG.warn("reportIssue Exception: CheckClass:{}",clz,e);
+      String f=inputComponent.isFile()?((InputFile)inputComponent).toString():inputComponent.key();
+      if(clz.equals(noStackClz)) LOG.warn("reportIssue Exception: CheckClass:{} {} {}",clz,e.getMessage(),f);
+      else LOG.warn("reportIssue Exception: CheckClass:{} {}",clz,f,e);
     }
   }
 

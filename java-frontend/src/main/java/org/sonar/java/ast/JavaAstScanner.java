@@ -23,11 +23,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
 import com.sonar.sslr.api.RecognitionException;
-import java.io.InterruptedIOException;
-import java.util.Collections;
-import java.util.concurrent.TimeUnit;
-import javax.annotation.Nullable;
-
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
@@ -39,6 +34,11 @@ import org.sonar.java.model.VisitorsBridge;
 import org.sonar.plugins.java.api.JavaVersion;
 import org.sonar.plugins.java.api.tree.Tree;
 import org.sonarsource.analyzer.commons.ProgressReport;
+
+import javax.annotation.Nullable;
+import java.io.InterruptedIOException;
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 public class JavaAstScanner {
   private static final Logger LOG = Loggers.get(JavaAstScanner.class);
@@ -104,7 +104,8 @@ public class JavaAstScanner {
       parseErrorWalkAndVisit(e, inputFile);
     }catch (VisitorsBridge.VisitorException e)
     {
-      LOG.info("VisitorException: start line:{} last line:{} Tree:{}",e.startLine(),e.lastLine(),e.tree().getClass(),e);
+      LOG.info("VisitorException:start line:{} last line:{} {} Tree:{}",
+              e.startLine(),e.lastLine(),inputFile,e.tree().getClass(),e);
     }
     catch (Exception e) {
       checkInterrupted(e);

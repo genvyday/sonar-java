@@ -23,24 +23,12 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.sonar.sslr.api.RecognitionException;
-import java.io.File;
-import java.io.InterruptedIOException;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.utils.AnnotationUtils;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 import org.sonar.check.Rule;
-import org.sonar.java.AnalysisError;
-import org.sonar.java.EndOfAnalysisCheck;
-import org.sonar.java.ExceptionHandler;
-import org.sonar.java.IllegalRuleParameterException;
-import org.sonar.java.JavaVersionAwareVisitor;
-import org.sonar.java.SonarComponents;
+import org.sonar.java.*;
 import org.sonar.java.ast.visitors.SonarSymbolTableVisitor;
 import org.sonar.java.ast.visitors.SubscriptionVisitor;
 import org.sonar.java.bytecode.ClassLoaderBuilder;
@@ -57,6 +45,14 @@ import org.sonar.plugins.java.api.tree.CompilationUnitTree;
 import org.sonar.plugins.java.api.tree.SyntaxToken;
 import org.sonar.plugins.java.api.tree.Tree;
 
+import javax.annotation.Nullable;
+import java.io.File;
+import java.io.InterruptedIOException;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 public class VisitorsBridge {
   public static class VisitorException extends RuntimeException
   {
@@ -66,9 +62,17 @@ public class VisitorsBridge {
       super(cause);
       tree=t;
     }
-    private int line(SyntaxToken st)
+    private int line(@Nullable SyntaxToken st)
     {
       return st==null?-1:st.line();
+    }
+    private String text(@Nullable SyntaxToken st)
+    {
+      return st==null?"":st.text();
+    }
+    public String text()
+    {
+      return text(tree.firstToken())+" -- "+text((tree.lastToken()));
     }
     public int lastLine()
     {
